@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora SCALL ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 50%, #e8eaf6 100%);
+            --primary: #c2185b; 
+            --secondary: #6a1b9a; 
+            --accent: #283593; 
+            --text-color: #311b92;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px 10px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        header h1 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        header p {
+            color: var(--secondary);
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 3px solid #f8bbd0;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(106, 27, 154, 0.15);
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            color: var(--secondary);
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e1bee7;
+            padding-bottom: 8px;
+        }
+
+        .form-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            background: #fcf4fc;
+            padding: 12px 15px;
+            border-radius: 12px;
+            border: 2px solid #e1bee7;
+        }
+
+        .form-row label {
+            font-weight: 700;
+            color: #4a148c;
+            font-size: 0.95rem;
+            flex: 1;
+            padding-right: 10px;
+        }
+
+        .input-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 0 0 180px;
+            justify-content: flex-end;
+        }
+
+        .form-row input {
+            width: 90px;
+            padding: 10px;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            outline: none;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-align: left;
+            background: #fff;
+            color: var(--primary);
+        }
+
+        .unit-text {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #6a1b9a;
+            white-space: nowrap;
+            min-width: 55px;
+            text-align: left;
+        }
+
+        .conversion-note {
+            font-size: 0.8rem;
+            color: #c2185b;
+            margin-top: 4px;
+            font-weight: 700;
+            text-align: right;
+            width: 100%;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 2px solid #ba68c8;
+            background: white;
+            margin-top: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            white-space: nowrap;
+        }
+
+        th, td {
+            padding: 12px 10px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: linear-gradient(135deg, #7b1fa2, #3f51b5);
+            color: white;
+            font-weight: 700;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fce4ec55;
+        }
+
+        td {
+            border-bottom: 1px solid #f8bbd0;
+            color: #212121;
+            font-weight: 500;
+        }
+
+        .total-row {
+            font-weight: 700;
+            background-color: #e8eaf6 !important;
+            color: #1a237e;
+            border-top: 2px solid #7986cb;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Calculadora SCALL</h1>
+            <p>Modelo de captación de agua de lluvia</p>
+        </header>
+
+        <div class="card">
+            <div class="section-title">✨ Parámetros del Sistema</div>
+            
+            <div class="form-row">
+                <label>Área de Captación:</label>
+                <div class="input-box">
+                    <span class="unit-text">m²</span>
+                    <input type="number" id="areaInput" value="100" oninput="calcularModelo()">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label>Coef. Escurrimiento (CE):</label>
+                <div class="input-box">
+                    <span class="unit-text">Adim.</span>
+                    <input type="number" id="ceInput" value="0.85" step="0.01" oninput="calcularModelo()">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label>Hacinamiento:</label>
+                <div class="input-box">
+                    <span class="unit-text">Pers.</span>
+                    <input type="number" id="haciInput" value="4" oninput="calcularModelo()">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label>Dotación:</label>
+                <div class="input-box">
+                    <span class="unit-text">L/p/día</span>
+                    <input type="number" id="dotacionInput" value="150" oninput="calcularModelo()">
+                </div>
+            </div>
+
+            <div class="form-row" style="flex-direction: column; align-items: stretch;">
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <label style="padding: 0;">Tarifa de Agua:</label>
+                    <div class="input-box">
+                        <span class="unit-text">$/m³</span>
+                        <input type="number" id="tarifaInput" value="120" oninput="actualizarConversion(); calcularModelo();">
+                    </div>
+                </div>
+                <div class="conversion-note" id="hintTarifa">Equivale a $0.1200 por litro</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">📊 Simulación y Ahorro</div>
+            <div class="table-container">
+                <table id="resultTable">
+                    <thead>
+                        <tr>
+                            <th>Mes</th>
+                            <th>Precip. (mm)</th>
+                            <th>POTCALL (L)</th>
+                            <th>ACH (L)</th>
+                            <th>Almacén (L)</th>
+                            <th>Ahorro ($)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const precipitacionMensual = [10.6, 8.6, 5.5, 4.3, 21.6, 84.6, 121.9, 106.2, 84.4, 29.0, 7.7, 4.0];
+        const diasMes = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+        function actualizarConversion() {
+            const tarifaM3 = parseFloat(document.getElementById('tarifaInput').value) || 0;
+            const tarifaLitro = tarifaM3 / 1000;
+            document.getElementById('hintTarifa').innerText = `Equivale a $${tarifaLitro.toFixed(4)} por litro`;
+        }
+
+        function calcularModelo() {
+            const area = parseFloat(document.getElementById('areaInput').value) || 0;
+            const ce = parseFloat(document.getElementById('ceInput').value) || 0;
+            const haci = parseFloat(document.getElementById('haciInput').value) || 0;
+            const dotacion = parseFloat(document.getElementById('dotacionInput').value) || 0;
+            const tarifaM3 = parseFloat(document.getElementById('tarifaInput').value) || 0; 
+            const tarifaLitro = tarifaM3 / 1000;
+
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            let acumuladoAnterior = 0;
+            let totalCaptacion = 0;
+            let totalConsumo = 0;
+            let totalAhorro = 0;
+
+            for (let i = 0; i < 12; i++) {
+                let mm = precipitacionMensual[i];
+                let potcall = area * mm * ce;
+                let ach = haci * dotacion * diasMes[i];
+                
+                let balancePrevio = acumuladoAnterior + potcall - ach;
+                let almacenamientoActual = balancePrevio < 0 ? 0 : balancePrevio;
+                let ahorroMes = almacenamientoActual * tarifaLitro;
+
+                totalCaptacion += potcall;
+                totalConsumo += ach;
+                totalAhorro += ahorroMes;
+
+                let row = `<tr>
+                    <td><b>${meses[i]}</b></td>
+                    <td>${mm.toFixed(1)}</td>
+                    <td>${potcall.toFixed(0)}</td>
+                    <td>${ach.toFixed(0)}</td>
+                    <td><b>${almacenamientoActual.toFixed(0)}</b></td>
+                    <td style="color: #c2185b; font-weight: 700;">$${ahorroMes.toFixed(2)}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+
+                acumuladoAnterior = almacenamientoActual;
+            }
+
+            let totalRow = `<tr class="total-row">
+                <td>TOTAL</td>
+                <td>-</td>
+                <td>${totalCaptacion.toFixed(0)}</td>
+                <td>${totalConsumo.toFixed(0)}</td>
+                <td>${acumuladoAnterior.toFixed(0)}</td>
+                <td style="color: #ad1457;">$${totalAhorro.toFixed(2)}</td>
+            </tr>`;
+            tbody.innerHTML += totalRow;
+        }
+
+        window.onload = () => {
+            actualizarConversion();
+            calcularModelo();
+        };
+    </script>
+</body>
+</html>
